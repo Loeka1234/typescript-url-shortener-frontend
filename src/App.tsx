@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 // Styled Components
@@ -15,9 +15,26 @@ import Home from "./pages/Home";
 import DefaultLayout from "./layouts/DefaultLayout";
 
 const App: React.FC = () => {
-    const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">("Light Mode");
-    const themeToggler = () =>
-        theme === "Light Mode" ? setTheme("Dark Mode") : setTheme("Light Mode");
+    const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">(
+        getLocalStorageTheme
+    );
+    const themeToggler = () => {
+        const newTheme = theme === "Light Mode" ? "Dark Mode" : "Light Mode";
+        localStorage.setItem("theme", newTheme);
+        setTheme(newTheme);
+    }
+
+    function getLocalStorageTheme() {
+        let themeFromLocalStorage: any = localStorage.getItem("theme");
+    
+        if (
+            themeFromLocalStorage !== "Light Mode" &&
+            themeFromLocalStorage !== "Dark Mode"
+        )
+            themeFromLocalStorage = "Light Mode";
+        
+        return themeFromLocalStorage;
+    }
 
     return (
         <ThemeProvider theme={theme === "Light Mode" ? lightTheme : darkTheme}>
@@ -30,7 +47,11 @@ const App: React.FC = () => {
                             <DefaultLayout
                                 title="Home"
                                 toggleTheme={themeToggler}
-                                theme={theme === "Light Mode" ? "Dark Mode" : "Light Mode"}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
                             >
                                 <Home />
                             </DefaultLayout>

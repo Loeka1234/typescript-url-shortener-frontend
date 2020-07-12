@@ -1,5 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useState } from "react";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+} from "react-router-dom";
 
 // Styled Components
 import { ThemeProvider } from "styled-components";
@@ -13,6 +18,7 @@ import Home from "./pages/Home";
 
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
+import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
     const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">(
@@ -22,17 +28,17 @@ const App: React.FC = () => {
         const newTheme = theme === "Light Mode" ? "Dark Mode" : "Light Mode";
         localStorage.setItem("theme", newTheme);
         setTheme(newTheme);
-    }
+    };
 
     function getLocalStorageTheme() {
         let themeFromLocalStorage: any = localStorage.getItem("theme");
-    
+
         if (
             themeFromLocalStorage !== "Light Mode" &&
             themeFromLocalStorage !== "Dark Mode"
         )
             themeFromLocalStorage = "Light Mode";
-        
+
         return themeFromLocalStorage;
     }
 
@@ -42,6 +48,7 @@ const App: React.FC = () => {
             <Router>
                 <Switch>
                     <Route
+                        exact
                         path="/"
                         render={() => (
                             <DefaultLayout
@@ -57,6 +64,24 @@ const App: React.FC = () => {
                             </DefaultLayout>
                         )}
                     />
+                    <Route
+                        exact
+                        path="/404"
+                        render={() => (
+                            <DefaultLayout
+                                title="Page Not Found"
+                                toggleTheme={themeToggler}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
+                            >
+                                <NotFound />
+                            </DefaultLayout>
+                        )}
+                    />
+                    <Redirect to="/404" />
                 </Switch>
             </Router>
         </ThemeProvider>

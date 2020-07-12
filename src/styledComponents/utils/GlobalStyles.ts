@@ -7,7 +7,7 @@ export const GlobalStyles = createGlobalStyle<{
         background: ${({ theme }) => theme.body};
         color: ${({ theme }) => theme.text};
         font-family: 'PT Sans Narrow', sans-serif;
-        transition: all 0.50s ease-in-out;
+        transition: background 0.50s linear, color 0.50s linear;
     }
     a {
         color: ${({ theme }) => theme.text}

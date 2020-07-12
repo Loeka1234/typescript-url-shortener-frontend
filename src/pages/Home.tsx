@@ -5,9 +5,9 @@ export interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
     return (
-        <>
+        <main>
             <Button>Home</Button>
-        </>
+        </main>
     );
 };
 

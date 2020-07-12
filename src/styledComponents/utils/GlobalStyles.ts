@@ -12,4 +12,7 @@ export const GlobalStyles = createGlobalStyle<{
     a {
         color: ${({ theme }) => theme.text}
     }
+    main {
+        min-height: calc(100vh - 51px - 91px);
+    }
 `;

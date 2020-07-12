@@ -15,12 +15,12 @@ import Home from "./pages/Home";
 import DefaultLayout from "./layouts/DefaultLayout";
 
 const App: React.FC = () => {
-    const [theme, setTheme] = useState<"light" | "dark">("light");
+    const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">("Light Mode");
     const themeToggler = () =>
-        theme === "light" ? setTheme("dark") : setTheme("light");
+        theme === "Light Mode" ? setTheme("Dark Mode") : setTheme("Light Mode");
 
     return (
-        <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
+        <ThemeProvider theme={theme === "Light Mode" ? lightTheme : darkTheme}>
             <GlobalStyles />
             <Router>
                 <Switch>
@@ -30,6 +30,7 @@ const App: React.FC = () => {
                             <DefaultLayout
                                 title="Home"
                                 toggleTheme={themeToggler}
+                                theme={theme === "Light Mode" ? "Dark Mode" : "Light Mode"}
                             >
                                 <Home />
                             </DefaultLayout>

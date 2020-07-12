@@ -22,6 +22,9 @@ const Button = styled.button<{ primary?: boolean; color?: string, useSecondaryCo
             background: ${!primary && color};
             color: ${!primary && "white"};
             }
+            &:focus {
+                outline:0;
+            }
         `;
     }}
 `;

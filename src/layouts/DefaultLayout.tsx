@@ -5,12 +5,13 @@ import Header from "../components/Header";
 import Footer from "../components//Footer";
 
 export interface DefaultLayoutProps {
-    children?: ReactNode,
-    title?: string,
-    toggleTheme?: (() => void | null)
+    children?: ReactNode;
+    title?: string;
+    toggleTheme?: (() => void | null);
+    theme?: string;
 }
 
-const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title, toggleTheme }) => {
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title, toggleTheme, theme }) => {
     return (
         <>
             <Helmet>
@@ -18,7 +19,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title, toggleTh
             </Helmet>
             <Header />
             {children}
-            <Footer toggleTheme={toggleTheme} />
+            <Footer toggleTheme={toggleTheme} theme={theme} />
         </>
     );
 };

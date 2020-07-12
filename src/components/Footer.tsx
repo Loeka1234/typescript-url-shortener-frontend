@@ -11,6 +11,9 @@ const SFooter = styled.footer`
         justify-content: center;
         align-items: center;
 
+        p, a {
+            color: black;
+        }
         p,
         a,
         button {
@@ -33,7 +36,7 @@ const SFooter = styled.footer`
             margin-bottom: 1.5rem;
             span {
                 font-weight: bold;
-                letter-spacing: .5px;
+                letter-spacing: 0.5px;
             }
         }
     `}
@@ -41,20 +44,23 @@ const SFooter = styled.footer`
 
 export interface FooterProps {
     toggleTheme?: () => void | null;
+    theme?: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ toggleTheme }) => {
+const Footer: React.FC<FooterProps> = ({ toggleTheme, theme }) => {
     return (
         <SFooter>
             <div>
                 <a href="http://www.loeka.me">www.loeka.me</a>
                 {toggleTheme && (
                     <Button onClick={toggleTheme} useSecondaryColor>
-                        Toggle Theme
+                        {theme}
                     </Button>
                 )}
             </div>
-            <p>Copyright ©2020 <span>Loeka Lievens</span></p>
+            <p>
+                Copyright ©2020 <span>Loeka Lievens</span>
+            </p>
         </SFooter>
     );
 };

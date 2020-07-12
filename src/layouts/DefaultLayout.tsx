@@ -6,10 +6,11 @@ import Footer from "../components//Footer";
 
 export interface DefaultLayoutProps {
     children?: ReactNode,
-    title?: string
+    title?: string,
+    toggleTheme?: (() => void | null)
 }
 
-const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title }) => {
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title, toggleTheme }) => {
     return (
         <>
             <Helmet>
@@ -17,7 +18,7 @@ const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title }) => {
             </Helmet>
             <Header />
             {children}
-            <Footer />
+            <Footer toggleTheme={toggleTheme} />
         </>
     );
 };

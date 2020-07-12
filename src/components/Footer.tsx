@@ -1,9 +1,16 @@
 import * as React from "react";
 
-export interface FooterProps {}
+export interface FooterProps {
+    toggleTheme?: () => void | null;
+}
 
-const Footer: React.FC<FooterProps> = () => {
-    return <div>Footer</div>;
+const Footer: React.FC<FooterProps> = ({ toggleTheme }) => {
+    return (
+        <div>
+            Footer
+            {toggleTheme && <button onClick={toggleTheme}>Toggle Theme</button>}
+        </div>
+    );
 };
 
 export default Footer;

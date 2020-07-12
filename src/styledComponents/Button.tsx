@@ -1,25 +1,23 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const Button = styled.button<{ primary?: boolean, color?: string }>`
-    background: ${props => (props.primary ? props.color : "white")};
-    color: ${props => (props.primary ? "white" : props.color)};
+const Button = styled.button<{ primary?: boolean; color?: string }>`
+    ${({ primary, theme: { primaryColor } }) => css`
+        background: ${primary ? primaryColor : "white"};
+        color: ${primary ? "white" : primaryColor};
 
-    font-size: 1em;
-    margin: 1em;
-    padding: .8rem 1.3rem;
-    border: 1px solid ${props => props.color};
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all .3s ease-in-out;
+        font-size: 1em;
+        margin: 1em;
+        padding: 0.8rem 1.3rem;
+        border: 1px solid ${primaryColor};
+        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
 
-    &:hover {
-        background: ${props => !props.primary && props.color};
-        color: ${props => !props.primary && "white"};
-    }
+        &:hover {
+            background: ${!primary && primaryColor};
+            color: ${!primary && "white"};
+        }
+    `}
 `;
-
-Button.defaultProps = {
-    color: "#51f5c1"
-}
 
 export default Button;

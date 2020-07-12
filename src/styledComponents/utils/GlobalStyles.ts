@@ -6,6 +6,10 @@ export const GlobalStyles = createGlobalStyle<{
     body {
         background: ${({ theme }) => theme.body};
         color: ${({ theme }) => theme.text};
+        font-family: 'PT Sans Narrow', sans-serif;
         transition: all 0.50s ease-in-out;
+    }
+    a {
+        color: ${({ theme }) => theme.text}
     }
 `;

@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
+import Button from "../styledComponents/Button";
 
-export interface HomeProps {
-    
-}
- 
+export interface HomeProps {}
+
 const Home: React.FC<HomeProps> = () => {
-    return ( <>home</> );
-}
- 
+    return (
+        <>
+            <Button>Home</Button>
+        </>
+    );
+};
+
 export default Home;

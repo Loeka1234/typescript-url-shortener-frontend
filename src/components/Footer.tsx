@@ -53,7 +53,7 @@ const Footer: React.FC<FooterProps> = ({ toggleTheme, theme }) => {
             <div>
                 <a href="http://www.loeka.me">www.loeka.me</a>
                 {toggleTheme && (
-                    <Button onClick={toggleTheme} useSecondaryColor>
+                    <Button onClick={toggleTheme} color="secondary">
                         {theme}
                     </Button>
                 )}

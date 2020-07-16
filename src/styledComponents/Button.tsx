@@ -1,11 +1,18 @@
 import styled, { css } from "styled-components";
 import Color from "color";
 
-const Button = styled.button<{ primary?: boolean; color?: string, useSecondaryColor?: boolean }>`
-    ${({ primary, useSecondaryColor, theme }) => {
+interface IButton {
+    primary?: boolean;
+    color?: "primary" | "secondary";
+}
+
+const Button = styled.button<IButton>`
+    ${({ primary, color, theme }) => {
         const { primaryColor, secondaryColor } = theme;
 
-        const color = useSecondaryColor ? secondaryColor : primaryColor;
+        if (!color) color = primaryColor;
+        else if (color === "primary") color = primaryColor;
+        else if (color === "secondary") color = secondaryColor;
 
         return css`
             background: ${primary ? color : "transparent"};
@@ -17,14 +24,16 @@ const Button = styled.button<{ primary?: boolean; color?: string, useSecondaryCo
             border: 1px solid ${color};
             border-radius: 3px;
             transition: all 0.3s ease-in-out;
-            
+
             &:hover {
                 cursor: pointer;
-                background: ${!primary ? color : Color(color).darken(0.3)};
+                background: ${!primary
+                    ? color
+                    : (Color(color).darken(0.3) as any)};
                 color: ${!primary && "white"};
             }
             &:focus {
-                outline:0;
+                outline: 0;
             }
         `;
     }}

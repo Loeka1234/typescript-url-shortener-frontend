@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 
 import styles from "./stylesheets/Home.module.css";
 
+// Styled components
 import FlexDiv from "../styledComponents/FlexDiv";
 import Button from "../styledComponents/Button";
+
+// Components
+import Shortener from "../components/Shortener";
 
 export interface HomeProps {}
 
@@ -22,23 +26,7 @@ const Home: React.FC<HomeProps> = () => {
                     <Button>About us</Button>
                 </Link>
 
-                <div className={styles.shortener}>
-                    <form action="">
-                        <div>
-                            <input
-                                type="text"
-                                className={styles.input}
-                                style={{
-                                    border: "1px solid black",
-                                    boxShadow:
-                                        "inset 0px 0px .25px .5px rgba(0,0,0,0.3)",
-                                }}
-                                placeholder="Enter the link here..."
-                            />
-                            <Button className={styles.input} primary>Shorten</Button>
-                        </div>
-                    </form>
-                </div>
+                <Shortener />
             </FlexDiv>
         </main>
     );

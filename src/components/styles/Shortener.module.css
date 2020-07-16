@@ -1,0 +1,95 @@
+.shortener {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    width: 40%;
+}
+.shortener form {
+    width: 100%;
+}
+.url {
+    border: 1px solid rgb(68, 68, 68);
+    box-shadow: inset 0px 0px 0.25px 0.5px rgba(0, 0, 0, 0.3);
+    width: 75%;
+}
+.btn {
+    width: 25%;
+}
+.input.input {
+    font-size: 1.3em;
+    margin: 0;
+    padding: 1rem;
+    height: 100%;
+    border-radius: 0;
+}
+
+.radio {
+    font-size: 1.2em;
+    margin: .5rem 0;
+}
+.radio:hover,
+.radio input:hover,
+.radio label:hover {
+    cursor: pointer;
+}
+.radio,
+.radio label {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+.text {
+    border: 1px solid rgb(68, 68, 68);
+    border-radius: 1px;
+    margin: 1px;
+    font-size: inherit;
+    font-weight: 400;
+    max-width: 45%;
+    color: #363537;
+}
+.text:disabled {
+    background-color: rgb(201, 201, 201);
+}
+
+.info {
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 1250px) {
+    .shortener {
+        width: 50%;
+    }
+}
+@media screen and (max-width: 1000px) {
+    .shortener {
+        width: 60%;
+    }
+}
+@media screen and (max-width: 750px) {
+    .shortener {
+        width: 80%;
+    }
+}
+@media screen and (max-width: 550px) {
+    .shortener {
+        width: 95%;
+    }
+}
+@media screen and (max-width: 450px) {
+    .url {
+        width: 60%;
+    }
+    .btn {
+        width: 40%;
+    }
+    .radio label {
+        flex-direction: column;
+        width: 100%;
+    }
+}
+@media screen and (max-width: 350px) {
+    .radio {
+        font-size: 1em;
+    }
+}

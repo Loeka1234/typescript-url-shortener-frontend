@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import Color from "color";
 
-interface IButton {
+export interface IButton {
     primary?: boolean;
     color?: "primary" | "secondary";
 }

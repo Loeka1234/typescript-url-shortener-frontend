@@ -7,6 +7,7 @@ import styles from "./styles/Shortener.module.css";
 // Styled components
 import Button from "../styledComponents/Button";
 import { useHistory } from "react-router-dom";
+import classes from "./styles/Shortener.module.css";
 
 export interface ShortenerProps {}
 
@@ -17,7 +18,7 @@ const Shortener: React.SFC<ShortenerProps> = () => {
     const [slug, setSlug] = useState("");
     const [useCustomUrl, setUseCustomUrl] = useState(false);
     const [privateUrl, setPrivateUrl] = useState(false);
-    const [info, setInfo] = useState("");
+    const [info, setInfo] = useState(<></>);
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -29,7 +30,7 @@ const Shortener: React.SFC<ShortenerProps> = () => {
             url: string;
         } = {
             url,
-            publicUrl: !privateUrl
+            publicUrl: !privateUrl,
         };
         if (useCustomUrl) {
             body.slug = slug;
@@ -37,10 +38,29 @@ const Shortener: React.SFC<ShortenerProps> = () => {
         } else if (!useCustomUrl) body.customSlug = false;
 
         try {
-            const response = await axios.post(process.env.REACT_APP_API_ENDPOINT + "/new", body);
-            console.log(response);
-            setInfo(response.data.message);
-            history.push(`/redirects/${response.data.slug}`)
+            const response = await axios.post(
+                process.env.REACT_APP_API_ENDPOINT + "/new",
+                body
+            );
+
+            if (!privateUrl) history.push(`/redirects/${response.data.slug}?created=true`);
+            else
+                setInfo(
+                    <p>
+                        Successfully created the url:{" "}
+                        <a
+                            href={`${process.env.REACT_APP_API_ENDPOINT}/${response.data.slug}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={classes.link}
+                        >
+                            {process.env.REACT_APP_API_ENDPOINT!.split("://")[1]}/
+                            {response.data.slug}
+                        </a>
+                        {" "}(No statistics available for this url as this url is
+                        private.)
+                    </p>
+                );
         } catch (err) {
             setInfo(err.response.data.error);
         }
@@ -104,9 +124,7 @@ const Shortener: React.SFC<ShortenerProps> = () => {
                     onClick={() => setPrivateUrl(!privateUrl)}
                 />
                 <label htmlFor="private">Keep my url private.</label>
-                <div className={styles.info}>
-                    <p>{info}</p>
-                </div>
+                <div className={styles.info}>{info}</div>
             </form>
         </div>
     );

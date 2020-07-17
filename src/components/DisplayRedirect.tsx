@@ -7,12 +7,17 @@ import FlexDiv from "../styledComponents/FlexDiv";
 export interface Props {
     url: string;
     redirectsTo: string;
+    justCreated?: boolean;
 }
 
-const DisplayRedirect: React.FC<Props> = ({ url, redirectsTo }) => {
+const DisplayRedirect: React.FC<Props> = ({
+    url,
+    redirectsTo,
+    justCreated,
+}) => {
     return (
         <FlexDiv flexDir="column" className={styles.displayRedirect}>
-            <h1 >Redirect</h1>
+            <h1>{justCreated && "Successfully created "}Redirect</h1>
             <p>
                 Url:{" "}
                 <a href={url} target="_blank" rel="noopener noreferrer">

@@ -54,6 +54,14 @@
 .info {
     display: flex;
     justify-content: center;
+    text-align: center;
+}
+
+.link {
+    color: #ff6969;
+}
+.link:hover {
+    text-decoration: underline;
 }
 
 @media screen and (max-width: 1250px) {

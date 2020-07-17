@@ -10,6 +10,7 @@ interface Data {
     createdAt: string;
     url: string;
     redirectTo: string;
+    slug: string;
 }
 
 type responseData = Data[];
@@ -46,9 +47,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                             </td>
                             <td className="url">
                                 <a
-                                    href={redirect.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                                    href={`http://localhost:3001/redirects/${redirect.slug}`}
                                 >
                                     {redirect.url.split("://")[1]}
                                 </a>

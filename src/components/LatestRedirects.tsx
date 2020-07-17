@@ -17,12 +17,14 @@ type responseData = Data[];
 
 const LatestRedirects: React.SFC<Props> = ({ className }) => {
     const [redirects, setRedirects] = useState<responseData>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios
             .get(process.env.REACT_APP_API_ENDPOINT + "/urls")
             .then((res: AxiosResponse<responseData>) => {
                 setRedirects(res.data);
+                setLoading(false);
             });
     }, []);
 
@@ -38,7 +40,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {redirects.length !== 0 && redirects.map((redirect, i) => (
+                    {!loading && redirects.length !== 0 && redirects.map((redirect, i) => (
                         <tr key={i}>
                             <td>
                                 {new Date(

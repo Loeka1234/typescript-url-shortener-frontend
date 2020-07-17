@@ -90,8 +90,8 @@ export default styled(LatestRedirects)`
         box-shadow: inset 0 -0.18em 0 #ff6969;
     }
     .url {
-        border-left: 1px solid black;
-        border-right: 1px solid black;
+        border-left: 1px solid ${({ theme: { color } }) => color};
+        border-right: 1px solid ${({ theme: { color } }) => color};
     }
 
     @media screen and (max-width: 550px) {

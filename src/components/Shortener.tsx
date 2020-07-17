@@ -1,15 +1,18 @@
 import React, { useState, FormEvent } from "react";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
 // Styles
 import styles from "./styles/Shortener.module.css";
 
 // Styled components
 import Button from "../styledComponents/Button";
+import { useHistory } from "react-router-dom";
 
 export interface ShortenerProps {}
 
 const Shortener: React.SFC<ShortenerProps> = () => {
+    const history = useHistory();
+
     const [url, setUrl] = useState("");
     const [slug, setSlug] = useState("");
     const [useCustomUrl, setUseCustomUrl] = useState(false);
@@ -35,7 +38,9 @@ const Shortener: React.SFC<ShortenerProps> = () => {
 
         try {
             const response = await axios.post(process.env.REACT_APP_API_ENDPOINT + "/new", body);
+            console.log(response);
             setInfo(response.data.message);
+            history.push(`/redirects/${response.data.slug}`)
         } catch (err) {
             setInfo(err.response.data.error);
         }

@@ -15,10 +15,11 @@ import "./general.css";
 
 // Pages
 import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import RedirectInfo from "./pages/RedirectInfo";
 
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
-import NotFound from "./pages/NotFound";
 
 const App: React.FC = () => {
     const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">(
@@ -47,6 +48,22 @@ const App: React.FC = () => {
             <GlobalStyles />
             <Router>
                 <Switch>
+                    <Route
+                        path="/redirects/:redirect"
+                        render={() => (
+                            <DefaultLayout
+                                title="Redirect"
+                                toggleTheme={themeToggler}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
+                            >
+                                <RedirectInfo />
+                            </DefaultLayout>
+                        )}
+                    />
                     <Route
                         exact
                         path="/"

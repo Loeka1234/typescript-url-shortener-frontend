@@ -25,6 +25,8 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
             .then((res: AxiosResponse<responseData>) => {
                 setRedirects(res.data);
                 setLoading(false);
+            }).catch(err => {
+                console.log(err);
             });
     }, []);
 

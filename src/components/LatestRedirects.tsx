@@ -38,7 +38,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {redirects && redirects.map((redirect, i) => (
+                    {redirects.length !== 0 && redirects.map((redirect, i) => (
                         <tr key={i}>
                             <td>
                                 {new Date(

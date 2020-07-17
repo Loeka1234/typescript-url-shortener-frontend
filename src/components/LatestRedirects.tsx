@@ -42,7 +42,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {!loading && redirects.length !== 0 && redirects.map((redirect, i) => (
+                    {!loading && Array.isArray(redirects) && redirects.map((redirect, i) => (
                         <tr key={i}>
                             <td>
                                 {new Date(

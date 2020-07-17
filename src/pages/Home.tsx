@@ -10,6 +10,7 @@ import Button from "../styledComponents/Button";
 // Components
 import Shortener from "../components/Shortener";
 import WhyChooseUs from "../components/WhyChooseUs";
+import LatestRedirects from "../components/LatestRedirects";
 
 export interface HomeProps {}
 
@@ -29,6 +30,7 @@ const Home: React.FC<HomeProps> = () => {
 
                 <Shortener />
                 <WhyChooseUs />
+                <LatestRedirects />
             </FlexDiv>
         </main>
     );

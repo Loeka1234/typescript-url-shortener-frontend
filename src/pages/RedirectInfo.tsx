@@ -17,15 +17,17 @@ const RedirectInfo: React.FC<Props> = () => {
 
     const [url, setUrl] = useState("");
     const [redirectsTo, setRedirectsTo] = useState("");
+    const [clicks, setClicks] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     useEffect(() => {
         axios
             .get(process.env.REACT_APP_API_ENDPOINT + `/info/${redirect}`)
-            .then(response => {
-                setUrl(response.data.url);
-                setRedirectsTo(response.data.redirectsTo);
+            .then(({ data }) => {
+                setUrl(data.url);
+                setRedirectsTo(data.redirectsTo);
+                setClicks(data.clicks);
                 setLoading(false);
             })
             .catch(err => {
@@ -54,6 +56,7 @@ const RedirectInfo: React.FC<Props> = () => {
                 <DisplayRedirect
                     url={url}
                     redirectsTo={redirectsTo}
+                    clicks={clicks}
                     justCreated={query.get("created") as unknown as boolean}
                 />
             )}

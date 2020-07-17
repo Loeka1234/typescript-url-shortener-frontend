@@ -8,12 +8,14 @@ export interface Props {
     url: string;
     redirectsTo: string;
     justCreated?: boolean;
+    clicks?: number | null;
 }
 
 const DisplayRedirect: React.FC<Props> = ({
     url,
     redirectsTo,
     justCreated,
+    clicks,
 }) => {
     return (
         <FlexDiv flexDir="column" className={styles.displayRedirect}>
@@ -30,6 +32,12 @@ const DisplayRedirect: React.FC<Props> = ({
                     {redirectsTo.split("://")[1]}
                 </a>
             </p>
+            {clicks !== null && (
+                <>
+                    <p>Amount times clicked:</p>
+                    <h1 className={styles.clicks}>{clicks}</h1>
+                </>
+            )}
         </FlexDiv>
     );
 };

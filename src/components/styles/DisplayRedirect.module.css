@@ -1,0 +1,17 @@
+.displayRedirect h1,
+.displayRedirect p {
+    margin: 1rem;
+    padding: 0;
+}
+.displayRedirect p {
+    font-size: 1.2em;
+}
+.displayRedirect h1 {
+    font-size: 4rem;
+}
+.displayRedirect a {
+    color: #51f5c1;
+}
+.displayRedirect a:hover {
+    text-decoration: underline;
+}

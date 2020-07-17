@@ -17,6 +17,7 @@ import "./general.css";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import RedirectInfo from "./pages/RedirectInfo";
+import About from "./pages/About";
 
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
@@ -80,6 +81,19 @@ const App: React.FC = () => {
                                 <Home />
                             </DefaultLayout>
                         )}
+                    />
+                    <Route 
+                        exact
+                        path="/about"
+                        render={() => (
+                            <DefaultLayout
+                                title="About"
+                                toggleTheme={themeToggler}
+                                theme={theme === "Light Mode" ? "Dark Mode" : "Light Mode"}
+                            >
+                                <About />
+                            </DefaultLayout>
+                        )} 
                     />
                     <Route
                         exact

@@ -18,6 +18,7 @@ import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
 import RedirectInfo from "./pages/RedirectInfo";
 import About from "./pages/About";
+import Register from "./pages/Register";
 
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
@@ -82,18 +83,39 @@ const App: React.FC = () => {
                             </DefaultLayout>
                         )}
                     />
-                    <Route 
+                    <Route
                         exact
                         path="/about"
                         render={() => (
                             <DefaultLayout
                                 title="About"
                                 toggleTheme={themeToggler}
-                                theme={theme === "Light Mode" ? "Dark Mode" : "Light Mode"}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
                             >
                                 <About />
                             </DefaultLayout>
-                        )} 
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/register"
+                        render={() => (
+                            <DefaultLayout
+                                title="Register"
+                                toggleTheme={themeToggler}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
+                            >
+                                <Register />
+                            </DefaultLayout>
+                        )}
                     />
                     <Route
                         exact

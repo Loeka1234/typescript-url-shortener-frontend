@@ -9,6 +9,9 @@ export const GlobalStyles = createGlobalStyle<{
         font-family: 'PT Sans Narrow', sans-serif;
         transition: background 0.50s linear, color 0.50s linear;
     }
+    input {
+        color: #363537;
+    }
     a {
         color: ${({ theme }) => theme.text};
         transition: color 0.50s linear;

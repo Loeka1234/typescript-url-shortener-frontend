@@ -10,6 +10,7 @@ import {
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styledComponents/utils/GlobalStyles";
 import { lightTheme, darkTheme } from "./styledComponents/utils/Theme";
+import Loader from "./styledComponents/Loader";
 
 import "./general.css";
 
@@ -24,8 +25,11 @@ import Login from "./pages/Login";
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
 import { setAccessToken } from "./accessToken";
+import Logout from "./pages/Logout";
 
 const App: React.FC = () => {
+    const [loading, setLoading] = useState(true);
+
     const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">(
         getLocalStorageTheme
     );
@@ -47,19 +51,22 @@ const App: React.FC = () => {
         return themeFromLocalStorage;
     }
 
-    // TODO: Add loader so it tries to get an access token before rendering te website 
+    // TODO: Add loader so it tries to get an access token before rendering te website
     useEffect(() => {
         fetch(process.env.REACT_APP_API_AUTH_ENDPOINT + "/token", {
             method: "POST",
             credentials: "include",
         })
             .then(async res => {
-                if (res.status === 200)
+                if (res.status === 200) {
                     console.log(
                         "%cLogged in with refresh token.",
                         "color: lightgreen"
                     );
-                    setAccessToken(await res.json().then(res => res.accessToken));
+                    setAccessToken(
+                        await res.json().then(res => res.accessToken)
+                    );
+                }
             })
             .catch(err => {
                 console.log(
@@ -67,10 +74,22 @@ const App: React.FC = () => {
                     "color: red"
                 );
                 console.error(err);
-            });
+            })
+            .finally(() => setLoading(false));
     }, []);
 
-    return (
+    return loading ? (
+        <div
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "100vh",
+            }}
+        >
+            <Loader size="lg" />
+        </div>
+    ) : (
         <ThemeProvider theme={theme === "Light Mode" ? lightTheme : darkTheme}>
             <GlobalStyles />
             <Router>
@@ -156,6 +175,23 @@ const App: React.FC = () => {
                                 }
                             >
                                 <Login />
+                            </DefaultLayout>
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/logout"
+                        render={() => (
+                            <DefaultLayout
+                                title="Logout"
+                                toggleTheme={themeToggler}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
+                            >
+                                <Logout />
                             </DefaultLayout>
                         )}
                     />

@@ -63,7 +63,7 @@ const StyledLoader = styled(Loader)<{ size?: "sm" | "md" | "lg" | number }>`
             height: ${scale * 150}px;
             display: inline-block;
             overflow: hidden;
-            background: #ffffff;
+            background: transparent;
             div {
                 width: 100%;
                 height: 100%;

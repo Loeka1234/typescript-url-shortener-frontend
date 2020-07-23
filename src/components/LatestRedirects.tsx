@@ -21,7 +21,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
 
     useEffect(() => {
         axios
-            .get(process.env.REACT_APP_API_ENDPOINT + "/urls")
+            .get(process.env.REACT_APP_API_URL_ENDPOINT + "/urls")
             .then((res: AxiosResponse<responseData>) => {
                 setRedirects(res.data);
                 setLoading(false);
@@ -62,7 +62,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {redirect.redirectTo.split("://")[1]}
+                                    {/* {redirect.redirectTo.split("://")[1]} */} 
                                 </a>
                             </td>
                         </tr>

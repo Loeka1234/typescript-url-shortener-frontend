@@ -23,7 +23,7 @@ const RedirectInfo: React.FC<Props> = () => {
 
     useEffect(() => {
         axios
-            .get(process.env.REACT_APP_API_ENDPOINT + `/info/${redirect}`)
+            .get(process.env.REACT_APP_API_URL_ENDPOINT + `/info/${redirect}`)
             .then(({ data }) => {
                 setUrl(data.url);
                 setRedirectsTo(data.redirectsTo);

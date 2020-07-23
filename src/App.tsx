@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     BrowserRouter as Router,
     Switch,
@@ -19,9 +19,11 @@ import NotFound from "./pages/NotFound";
 import RedirectInfo from "./pages/RedirectInfo";
 import About from "./pages/About";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
+import { setAccessToken } from "./accessToken";
 
 const App: React.FC = () => {
     const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">(
@@ -44,6 +46,29 @@ const App: React.FC = () => {
 
         return themeFromLocalStorage;
     }
+
+    // TODO: Add loader so it tries to get an access token before rendering te website 
+    useEffect(() => {
+        fetch(process.env.REACT_APP_API_AUTH_ENDPOINT + "/token", {
+            method: "POST",
+            credentials: "include",
+        })
+            .then(async res => {
+                if (res.status === 200)
+                    console.log(
+                        "%cLogged in with refresh token.",
+                        "color: lightgreen"
+                    );
+                    setAccessToken(await res.json().then(res => res.accessToken));
+            })
+            .catch(err => {
+                console.log(
+                    "%cCouldn't login with refresh token.",
+                    "color: red"
+                );
+                console.error(err);
+            });
+    }, []);
 
     return (
         <ThemeProvider theme={theme === "Light Mode" ? lightTheme : darkTheme}>
@@ -114,6 +139,23 @@ const App: React.FC = () => {
                                 }
                             >
                                 <Register />
+                            </DefaultLayout>
+                        )}
+                    />
+                    <Route
+                        exact
+                        path="/login"
+                        render={() => (
+                            <DefaultLayout
+                                title="Login"
+                                toggleTheme={themeToggler}
+                                theme={
+                                    theme === "Light Mode"
+                                        ? "Dark Mode"
+                                        : "Light Mode"
+                                }
+                            >
+                                <Login />
                             </DefaultLayout>
                         )}
                     />

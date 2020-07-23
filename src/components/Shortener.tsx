@@ -1,12 +1,12 @@
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 // Styles
 import styles from "./styles/Shortener.module.css";
 
 // Styled components
 import Button from "../styledComponents/Button";
-import { useHistory } from "react-router-dom";
 import classes from "./styles/Shortener.module.css";
 
 export interface ShortenerProps {}
@@ -39,7 +39,7 @@ const Shortener: React.SFC<ShortenerProps> = () => {
 
         try {
             const response = await axios.post(
-                process.env.REACT_APP_API_ENDPOINT + "/new",
+                process.env.REACT_APP_API_URL_ENDPOINT + "/new",
                 body
             );
 

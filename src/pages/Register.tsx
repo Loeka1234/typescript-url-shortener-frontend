@@ -1,68 +1,14 @@
 import React, { useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import axios from "axios";
 
 import Button from "../styledComponents/Button";
+import MainWithForm from "../styledComponents/MainWithForm";
 
 // TODO: Check inputs at client side -> less requests to server, faster for client
 // TODO: Log user automatically in when they register
 
-const SMain = styled.main`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    h1 {
-        margin: 0;
-        padding: 0;
-    }
-    form {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        .wrap {
-            margin: 2rem;
-            margin-bottom: 0.3rem;
-            display: flex;
-            justify-content: center;
-            div {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-                justify-content: space-between;
-                div {
-                    height: 25%;
-                    display: flex;
-                    align-items: center;
-                    flex-direction: row;
-                    margin: 0.5rem;
-                    input,
-                    label {
-                        font-size: 1.8rem;
-                    }
-                    input {
-                        width: 200px;
-                        border-radius: 1px;
-                        border: 1px solid black;
-                    }
-                }
-            }
-        }
-        button {
-            margin: 0;
-            margin-top: .3rem;
-        }
-        p {
-            text-align: center;
-        }
-    }
-`;
-
-export interface Props {}
-
-const Register: React.FC<Props> = () => {
+const Register: React.FC = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -70,6 +16,7 @@ const Register: React.FC<Props> = () => {
     const [error, setError] = useState("");
     const [created, setCreated] = useState(false);
 
+    // TODO: add error handling if no response from server
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -78,7 +25,7 @@ const Register: React.FC<Props> = () => {
 
         try {
             const res = await axios.post(
-                process.env.REACT_APP_AUTH_API_ENDPOINT! + "/register",
+                process.env.REACT_APP_API_AUTH_ENDPOINT! + "/register",
                 {
                     name,
                     password,
@@ -88,16 +35,18 @@ const Register: React.FC<Props> = () => {
             if (res.status === 400) return setError(res.data.error);
             else setCreated(true);
         } catch (err) {
-            setError(err.response.data.message);
+            setError(err.response.data.message || err.response.data.error); // TODO: Add better error handling to the backend to avoid these things
         }
     };
 
     return (
-        <SMain>
+        <MainWithForm>
             {created && (
                 <>
                     <h1>Successfully created account.</h1>
-                    <Link to="/login"><Button>Login</Button></Link>
+                    <Link to="/login">
+                        <Button>Login</Button>
+                    </Link>
                 </>
             )}
             {!created && (
@@ -169,7 +118,7 @@ const Register: React.FC<Props> = () => {
                     </form>
                 </>
             )}
-        </SMain>
+        </MainWithForm>
     );
 };
 

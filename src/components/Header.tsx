@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 import { getAccessToken } from "../accessToken";
@@ -21,27 +21,94 @@ const SHeader = styled.header`
         ul {
             margin: 0;
             padding: 0;
-        }
-        li {
-            display: inline-block;
-            padding: 0.2rem;
-            margin: 1rem 2rem;
-            font-size: 1.5em;
-            letter-spacing: 0.1rem;
-        }
-        li:hover {
-            box-shadow: inset 0 -0.13em 0 ${primaryColor};
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
+            li {
+                display: inline-block;
+                padding: 0.2rem;
+                margin: 1rem 2rem;
+                font-size: 1.5em;
+                letter-spacing: 0.1rem;
+                &:hover {
+                    box-shadow: inset 0 -0.13em 0 ${primaryColor};
+                    cursor: pointer;
+                    transition: all 0.2s ease-in-out;
+                }
+            }
         }
 
-        @media only screen and (max-width: 500px) {
+        @media only screen and (max-width: 800px) {
             flex-direction: column;
+            h1 {
+                margin: 1rem;
+            }
+            ul {
+                display: flex;
+                align-items: center;
+                flex-direction: column;
+                li {
+                    display: block;
+                }
+            }
+        }
+
+        .hamburger {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            .menu-icon {
+                cursor: pointer;
+                display: inline-block;
+                float: right;
+                padding: 28px 20px;
+                position: relative;
+                user-select: none;
+                .navicon {
+                    background: #333;
+                    display: block;
+                    height: 3px;
+                    position: relative;
+                    transition: background 0.2s ease-out;
+                    width: 34px;
+                    &:before,
+                    &:after {
+                        background: #333;
+                        content: "";
+                        display: block;
+                        height: 100%;
+                        position: absolute;
+                        transition: all 0.2s ease-out;
+                        width: 100%;
+                    }
+                    &:before {
+                        top: -10px;
+                    }
+                    &:after {
+                        top: 10px;
+                    }
+                }
+            }
+            .menu-btn {
+                display: none;
+                &.menu-btn:checked ~ .menu-icon .navicon {
+                    background: transparent;
+                }
+                &:checked ~ .menu-icon .navicon:before {
+                    transform: rotate(-45deg);
+                }
+                &:checked ~ .menu-icon .navicon:after {
+                    transform: rotate(45deg);
+                }
+                &:checked ~ .menu-icon:not(.steps) .navicon:before,
+                &:checked ~ .menu-icon:not(.steps) .navicon:after {
+                    top: 0;
+                }
+            }
         }
     `}
 `;
 
 const Header: React.FC = () => {
+    const [showNav, setShowNav] = useState(false);
+
     const RenderUser = () => {
         if (!getAccessToken())
             return (
@@ -68,10 +135,20 @@ const Header: React.FC = () => {
         );
     };
 
+    const handleNav = (e: ChangeEvent<HTMLInputElement>) => {
+        setShowNav(e.target.checked);
+    }
+
     return (
         <SHeader>
+            <div className="hamburger">
+                <input className="menu-btn" type="checkbox" id="menu-btn" defaultChecked={false} onChange={handleNav} />
+                <label className="menu-icon" htmlFor="menu-btn">
+                    <span className="navicon"></span>
+                </label>
+            </div>
             <h1>Url Shortener</h1>
-            <ul>
+            <ul style={{ display: showNav ? "flex" : "none" }}>
                 <li>
                     <Link to="/">Home</Link>
                 </li>

@@ -18,7 +18,7 @@ const DisplayRedirect: React.FC<Props> = ({
     clicks,
 }) => {
     return (
-        <FlexDiv flexDir="column" className={styles.displayRedirect}>
+        <FlexDiv column className={styles.displayRedirect}>
             <h1>{justCreated && "Successfully created "}Redirect</h1>
             <p>
                 Url:{" "}

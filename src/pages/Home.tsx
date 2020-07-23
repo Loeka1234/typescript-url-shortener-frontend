@@ -17,7 +17,7 @@ export interface HomeProps {}
 const Home: React.FC<HomeProps> = () => {
     return (
         <main>
-            <FlexDiv flexDir="column">
+            <FlexDiv column>
                 <h2 className={styles.h2}>Shorten your urls easily!</h2>
                 <p className={styles.p}>
                     Shortto.me is simple url shortener website! Use our URL

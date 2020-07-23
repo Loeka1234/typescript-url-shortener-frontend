@@ -5,7 +5,7 @@ import { getAccessToken } from "../accessToken";
 import jwtDecode from "jwt-decode";
 
 const SHeader = styled.header`
-    ${({ theme: { primaryColor, secondaryColor } }) => css`
+    ${({ theme: { primaryColor, secondaryColor, text } }) => css`
         width: 100%;
         margin: 0;
         padding: 0;
@@ -35,22 +35,8 @@ const SHeader = styled.header`
             }
         }
 
-        @media only screen and (max-width: 800px) {
-            flex-direction: column;
-            h1 {
-                margin: 1rem;
-            }
-            ul {
-                display: flex;
-                align-items: center;
-                flex-direction: column;
-                li {
-                    display: block;
-                }
-            }
-        }
-
         .hamburger {
+            visibility: hidden;
             position: absolute;
             top: 5px;
             right: 5px;
@@ -62,7 +48,7 @@ const SHeader = styled.header`
                 position: relative;
                 user-select: none;
                 .navicon {
-                    background: #333;
+                    background: ${text};
                     display: block;
                     height: 3px;
                     position: relative;
@@ -70,7 +56,7 @@ const SHeader = styled.header`
                     width: 34px;
                     &:before,
                     &:after {
-                        background: #333;
+                        background: ${text};
                         content: "";
                         display: block;
                         height: 100%;
@@ -101,6 +87,26 @@ const SHeader = styled.header`
                 &:checked ~ .menu-icon:not(.steps) .navicon:after {
                     top: 0;
                 }
+            }
+        }
+        @media only screen and (max-width: 800px) {
+            flex-direction: column;
+            h1 {
+                margin: 1rem;
+            }
+            ul {
+                display: none;
+                align-items: center;
+                flex-direction: column;
+                &.show {
+                    display: flex;
+                }
+                li {
+                    display: block;
+                }
+            }
+            .hamburger {
+                visibility: visible;
             }
         }
     `}
@@ -137,18 +143,24 @@ const Header: React.FC = () => {
 
     const handleNav = (e: ChangeEvent<HTMLInputElement>) => {
         setShowNav(e.target.checked);
-    }
+    };
 
     return (
         <SHeader>
             <div className="hamburger">
-                <input className="menu-btn" type="checkbox" id="menu-btn" defaultChecked={false} onChange={handleNav} />
+                <input
+                    className="menu-btn"
+                    type="checkbox"
+                    id="menu-btn"
+                    defaultChecked={false}
+                    onChange={handleNav}
+                />
                 <label className="menu-icon" htmlFor="menu-btn">
                     <span className="navicon"></span>
                 </label>
             </div>
             <h1>Url Shortener</h1>
-            <ul style={{ display: showNav ? "flex" : "none" }}>
+            <ul className={showNav ? "show" : ""}>
                 <li>
                     <Link to="/">Home</Link>
                 </li>

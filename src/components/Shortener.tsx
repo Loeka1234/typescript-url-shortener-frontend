@@ -1,133 +1,194 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState } from "react";
+import styled from "styled-components";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-
-// Styles
-import styles from "./styles/Shortener.module.css";
+import { getAccessToken } from "../accessToken";
+import { Link, useHistory } from "react-router-dom";
 
 // Styled components
 import Button from "../styledComponents/Button";
-import classes from "./styles/Shortener.module.css";
+import FlexDiv from "../styledComponents/FlexDiv";
 
-export interface ShortenerProps {}
+// Icons
+import {
+    RiCheckboxBlankCircleLine,
+    RiCheckboxCircleLine,
+} from "react-icons/ri";
 
-const Shortener: React.SFC<ShortenerProps> = () => {
+const SShortener = styled.div`
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    form {
+        width: 55%;
+        div {
+            .url,
+            button {
+                font-size: 1.3em;
+                margin: 0;
+                padding: 1rem;
+            }
+            .url {
+                width: calc(100% - 100px);
+                border: 1px solid ${({ theme }) => theme.text};
+            }
+            button {
+                width: 100px;
+                border-radius: 0;
+                border: 1px solid ${({ theme }) => theme.primaryColor};
+            }
+        }
+        .options {
+            margin-top: 1rem;
+            div {
+                padding: 3px;
+                justify-content: flex-start;
+                font-size: 2rem;
+                user-select: none;
+                &:hover {
+                    cursor: pointer;
+                    /* svg {
+                        fill: ;
+                    } */
+                }
+                svg {
+                    fill: ${({ theme }) => theme.text};
+                    margin: 0.7rem;
+                    margin-right: 0.3rem;
+                }
+                input {
+                    border: 1px solid #ccc;
+                    border-radius: 1px;
+                    margin: 1px;
+                }
+                p {
+                    margin: 0;
+                    a:hover {
+                        box-shadow: inset 0 -0.18em 0 #ff6969;
+                    }
+                }
+            }
+        }
+    }
+    @media screen and (max-width: 1450px) {
+        form {
+            width: 70%;
+        }
+    }
+    @media screen and (max-width: 1000px) {
+        form {
+            width: 85%;
+        }
+    }
+    @media screen and (max-width: 800px) {
+        form {
+            width: 100%;
+        }
+    }
+`;
+
+const Shortener2: React.FC = () => {
+    const [url, setUrl] = useState("");
+    const [customSlug, setCustomSlug] = useState(false);
+    const [slug, setSlug] = useState("");
+    const [privateUrl, setPrivateUrl] = useState(false);
+    const [error, setError] = useState("");
+
     const history = useHistory();
 
-    const [url, setUrl] = useState("");
-    const [slug, setSlug] = useState("");
-    const [useCustomUrl, setUseCustomUrl] = useState(false);
-    const [privateUrl, setPrivateUrl] = useState(false);
-    const [info, setInfo] = useState(<></>);
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        let body: {
-            slug?: string;
-            customSlug?: boolean;
-            publicUrl: boolean;
-            url: string;
-        } = {
-            url,
-            publicUrl: !privateUrl,
-        };
-        if (useCustomUrl) {
-            body.slug = slug;
-            body.customSlug = true;
-        } else if (!useCustomUrl) body.customSlug = false;
-
         try {
-            const response = await axios.post(
+            const res = await axios.post(
                 process.env.REACT_APP_API_URL_ENDPOINT + "/new",
-                body
+                {
+                    slug,
+                    customSlug,
+                    url,
+                    publicUrl: !privateUrl,
+                }
             );
-
-            if (!privateUrl) history.push(`/redirects/${response.data.slug}?created=true`);
-            else
-                setInfo(
-                    <p>
-                        Successfully created the url:{" "}
-                        <a
-                            href={`${process.env.REACT_APP_API_ENDPOINT}/${response.data.slug}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={classes.link}
-                        >
-                            {process.env.REACT_APP_API_ENDPOINT!.split("://")[1]}/
-                            {response.data.slug}
-                        </a>
-                        {" "}(No statistics available for this url as this url is
-                        private.)
-                    </p>
-                );
+            // TODO: Create redirect created for private url with the response
+            history.push(`/redirects/${res.data.slug}?created=true`);
         } catch (err) {
-            setInfo(err.response.data.error);
+            setError(err.response.data.message);
+            console.log(err.response);
         }
     };
 
     return (
-        <div className={styles.shortener}>
+        <SShortener>
             <form onSubmit={handleSubmit}>
                 <div>
                     <input
                         type="text"
-                        className={styles.input + " " + styles.url}
-                        placeholder="Enter the link here..."
-                        onChange={e => setUrl(e.target.value)}
+                        name="url"
+                        id="url"
+                        placeholder="Enter your url here..."
+                        className="url"
                         value={url}
+                        onChange={e => setUrl(e.target.value)}
                     />
-                    <Button
-                        className={styles.input + " " + styles.btn}
-                        primary
-                        type="submit"
-                    >
+                    <Button primary type="submit">
                         Shorten
                     </Button>
                 </div>
-
-                <div className={styles.radio}>
-                    <input
-                        type="radio"
-                        id="no-custom-url"
-                        name="url"
-                        checked={!useCustomUrl}
-                        onClick={() => setUseCustomUrl(false)}
-                    />
-                    <label htmlFor="no-custom-url">
-                        Random Url: www.shortto.me/[randomid]
-                    </label>
+                <div className="options">
+                    <FlexDiv
+                        row
+                        onClick={(e: any) => {
+                            if (e.target.type !== "text")
+                                setCustomSlug(!customSlug);
+                        }}
+                    >
+                        {customSlug ? (
+                            <RiCheckboxCircleLine size={23} color="#4a4a4a" />
+                        ) : (
+                            <RiCheckboxBlankCircleLine
+                                size={23}
+                                color="#4a4a4a"
+                            />
+                        )}
+                        <p>
+                            Custom url: shortto.me/
+                            <input
+                                type="text"
+                                disabled={!customSlug}
+                                value={slug}
+                                onChange={e => setSlug(e.target.value)}
+                            />
+                        </p>
+                    </FlexDiv>
+                    <FlexDiv row onClick={e => setPrivateUrl(!privateUrl)}>
+                        {privateUrl ? (
+                            <RiCheckboxCircleLine size={23} color="#4a4a4a" />
+                        ) : (
+                            <RiCheckboxBlankCircleLine
+                                size={23}
+                                color="#4a4a4a"
+                            />
+                        )}
+                        <p>
+                            Keep my url private.
+                            {getAccessToken() ? (
+                                " You will be the owner of this url."
+                            ) : (
+                                <>
+                                    {" "}
+                                    <Link to="/login">Login</Link> to be the
+                                    owner of this url.
+                                </>
+                            )}
+                        </p>
+                    </FlexDiv>
                 </div>
-                <div className={styles.radio}>
-                    <input
-                        type="radio"
-                        id="custom-url"
-                        name="url"
-                        checked={useCustomUrl}
-                        onClick={() => setUseCustomUrl(true)}
-                    />
-                    <label htmlFor="custom-url">
-                        Custom Url: www.shortto.me/
-                        <input
-                            className={styles.text}
-                            type="text"
-                            disabled={!useCustomUrl}
-                            value={slug}
-                            onChange={e => setSlug(e.target.value)}
-                        />
-                    </label>
-                </div>
-                <input
-                    type="checkbox"
-                    id="private"
-                    checked={privateUrl}
-                    onClick={() => setPrivateUrl(!privateUrl)}
-                />
-                <label htmlFor="private">Keep my url private.</label>
-                <div className={styles.info}>{info}</div>
+                <FlexDiv>
+                    <p>{error}</p>
+                </FlexDiv>
             </form>
-        </div>
+        </SShortener>
     );
 };
 
-export default Shortener;
+export default Shortener2;

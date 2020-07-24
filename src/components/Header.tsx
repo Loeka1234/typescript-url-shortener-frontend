@@ -113,7 +113,7 @@ const SHeader = styled.header`
 
 const Header: React.FC = () => {
     const [showNav, setShowNav] = useState(false);
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     const handleNav = (e: ChangeEvent<HTMLInputElement>) => {
         setShowNav(e.target.checked);

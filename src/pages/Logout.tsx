@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { setAccessToken, getAccessToken } from "../accessToken";
 import { useHistory, Redirect } from "react-router-dom";
 import Loader from "../styledComponents/Loader";
+import { UserContext } from "../utils/userContext";
 
 export interface Props {}
 
 const Logout: React.FC = () => {
     const history = useHistory();
     const [error, setError] = useState("");
+
+    const { setUser } = useContext(UserContext);
+
     useEffect(() => {
         fetch(process.env.REACT_APP_API_AUTH_ENDPOINT + "/logout", {
             method: "DELETE",
@@ -17,12 +21,13 @@ const Logout: React.FC = () => {
                 if (res.status === 200) {
                     console.log("Successfully logged out.");
                     setAccessToken("");
+                    setUser(null);
                     history.push("/");
                 }
             })
             .catch(err => {
                 console.error(err);
-                setError("Couldn't logout.");
+                setError("Couldn't logout. Try refreshing the page.");
             });
         // eslint-disable-next-line
     }, []);

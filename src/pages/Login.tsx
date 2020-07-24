@@ -1,10 +1,12 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useContext } from "react";
 import { setAccessToken } from "../accessToken";
+import jwtDecode from "jwt-decode";
 
 // Styled Components
 import Button from "../styledComponents/Button";
 import MainWithForm from "../styledComponents/MainWithForm";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../utils/userContext";
 
 // TODO: Add form validation on the client side -> less requests to server + faster frontend
 
@@ -13,6 +15,8 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const history = useHistory();
+
+    const { setUser } = useContext(UserContext);
 
     // TODO: add error handling if no response from server
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -36,9 +40,12 @@ const Login: React.FC = () => {
         const data = await res.json();
 
         if (res.status !== 200)
-            return setError(data.message || data.error || "Internal server error.");
+            return setError(
+                data.message || data.error || "Internal server error."
+            );
 
         setAccessToken(data.accessToken);
+        setUser(jwtDecode(data.accessToken));
         return history.push("/");
     };
 

@@ -1,8 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { getAccessToken } from "../accessToken";
-import jwtDecode from "jwt-decode";
+import { UserContext } from "../utils/userContext";
 
 const SHeader = styled.header`
     ${({ theme: { primaryColor, secondaryColor, text } }) => css`
@@ -114,32 +113,7 @@ const SHeader = styled.header`
 
 const Header: React.FC = () => {
     const [showNav, setShowNav] = useState(false);
-
-    const RenderUser = () => {
-        if (!getAccessToken())
-            return (
-                <>
-                    <li>
-                        <Link to="/login">Login</Link>
-                    </li>
-                    <li>
-                        <Link to="/register">Register</Link>
-                    </li>
-                </>
-            );
-
-        const { name } = jwtDecode(getAccessToken());
-        return (
-            <>
-                <li>
-                    <Link to="/account">{name}</Link>
-                </li>
-                <li>
-                    <Link to="/logout">Logout</Link>
-                </li>
-            </>
-        );
-    };
+    const { user, setUser } = useContext(UserContext);
 
     const handleNav = (e: ChangeEvent<HTMLInputElement>) => {
         setShowNav(e.target.checked);
@@ -167,7 +141,25 @@ const Header: React.FC = () => {
                 <li>
                     <Link to="/about">About</Link>
                 </li>
-                <RenderUser />
+                {user ? (
+                    <>
+                        <li>
+                            <Link to="/account">{user.name}</Link>
+                        </li>
+                        <li>
+                            <Link to="/logout">Logout</Link>
+                        </li>
+                    </>
+                ) : (
+                    <>
+                        <li>
+                            <Link to="/login">Login</Link>
+                        </li>
+                        <li>
+                            <Link to="/register">Register</Link>
+                        </li>
+                    </>
+                )}
             </ul>
         </SHeader>
     );

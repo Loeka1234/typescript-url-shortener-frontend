@@ -6,6 +6,7 @@ import {
     Redirect,
 } from "react-router-dom";
 import { setAccessToken } from "./accessToken";
+import jwtDecode from "jwt-decode";
 
 // Styled Components
 import { GlobalStyles } from "./styledComponents/utils/GlobalStyles";
@@ -25,9 +26,11 @@ import Logout from "./pages/Logout";
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
 import Theme from "./components/Theme";
+import { UserContext } from "./utils/userContext";
 
 const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         fetch(process.env.REACT_APP_API_AUTH_ENDPOINT + "/token", {
@@ -40,9 +43,9 @@ const App: React.FC = () => {
                         "%cLogged in with refresh token.",
                         "color: lightgreen"
                     );
-                    setAccessToken(
-                        await res.json().then(res => res.accessToken)
-                    );
+                    const token = await res.json().then(res => res.accessToken);
+                    setAccessToken(token);
+                    setUser(jwtDecode(token));
                 }
             })
             .catch(err => {
@@ -67,76 +70,78 @@ const App: React.FC = () => {
             <Loader size="lg" />
         </div>
     ) : (
-        <Theme>
-            <GlobalStyles />
-            <Router>
-                <Switch>
-                    <Route
-                        path="/redirects/:redirect"
-                        render={() => (
-                            <DefaultLayout title="Redirect">
-                                <RedirectInfo />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/"
-                        render={() => (
-                            <DefaultLayout title="Home">
-                                <Home />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/about"
-                        render={() => (
-                            <DefaultLayout title="About">
-                                <About />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/register"
-                        render={() => (
-                            <DefaultLayout title="Register">
-                                <Register />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/login"
-                        render={() => (
-                            <DefaultLayout title="Login">
-                                <Login />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/logout"
-                        render={() => (
-                            <DefaultLayout title="Logout">
-                                <Logout />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Route
-                        exact
-                        path="/404"
-                        render={() => (
-                            <DefaultLayout title="Page Not Found">
-                                <NotFound />
-                            </DefaultLayout>
-                        )}
-                    />
-                    <Redirect to="/404" />
-                </Switch>
-            </Router>
-        </Theme>
+        <UserContext.Provider value={{ user, setUser }}>
+            <Theme>
+                <GlobalStyles />
+                <Router>
+                    <Switch>
+                        <Route
+                            path="/redirects/:redirect"
+                            render={() => (
+                                <DefaultLayout title="Redirect">
+                                    <RedirectInfo />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/"
+                            render={() => (
+                                <DefaultLayout title="Home">
+                                    <Home />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/about"
+                            render={() => (
+                                <DefaultLayout title="About">
+                                    <About />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/register"
+                            render={() => (
+                                <DefaultLayout title="Register">
+                                    <Register />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/login"
+                            render={() => (
+                                <DefaultLayout title="Login">
+                                    <Login />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/logout"
+                            render={() => (
+                                <DefaultLayout title="Logout">
+                                    <Logout />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Route
+                            exact
+                            path="/404"
+                            render={() => (
+                                <DefaultLayout title="Page Not Found">
+                                    <NotFound />
+                                </DefaultLayout>
+                            )}
+                        />
+                        <Redirect to="/404" />
+                    </Switch>
+                </Router>
+            </Theme>
+        </UserContext.Provider>
     );
 };
 

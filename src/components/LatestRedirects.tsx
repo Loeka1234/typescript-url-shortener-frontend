@@ -9,8 +9,10 @@ interface Props {
 interface Data {
     createdAt: string;
     url: string;
-    redirectTo: string;
+    redirectsTo: string;
     slug: string;
+    clicks: number;
+    publicUrl: boolean;
 }
 
 type responseData = Data[];
@@ -39,6 +41,7 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                         <th>Date</th>
                         <th>Url</th>
                         <th>Redirects to</th>
+                        <th>Clicks</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,19 +54,22 @@ const LatestRedirects: React.SFC<Props> = ({ className }) => {
                             </td>
                             <td className="url">
                                 <a
-                                    href={`http://localhost:3001/redirects/${redirect.slug}`}
+                                    href={`${process.env.REACT_APP_DOMAIN}/redirects/${redirect.slug}`}
                                 >
                                     {redirect.url.split("://")[1]}
                                 </a>
                             </td>
-                            <td>
+                            <td className="redirectsTo">
                                 <a
-                                    href={redirect.redirectTo}
+                                    href={redirect.redirectsTo}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    {/* {redirect.redirectTo.split("://")[1]} */} 
+                                    {redirect.redirectsTo.split("://")[1]} 
                                 </a>
+                            </td>
+                            <td>
+                                {redirect.clicks}
                             </td>
                         </tr>
                     ))}
@@ -96,7 +102,9 @@ export default styled(LatestRedirects)`
         border-left: 1px solid ${({ theme: { color } }) => color};
         border-right: 1px solid ${({ theme: { color } }) => color};
     }
-
+    .redirectsTo {
+        border-right: 1px solid ${({ theme: { color } }) => color};
+    }
     @media screen and (max-width: 550px) {
         h1 {
             font-size: 2em;

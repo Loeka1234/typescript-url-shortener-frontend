@@ -18,6 +18,7 @@ const RedirectInfo: React.FC<Props> = () => {
     const [url, setUrl] = useState("");
     const [redirectsTo, setRedirectsTo] = useState("");
     const [clicks, setClicks] = useState<number | null>(null);
+    const [publicUrl, setPublicUrl] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
@@ -28,6 +29,7 @@ const RedirectInfo: React.FC<Props> = () => {
                 setUrl(data.url);
                 setRedirectsTo(data.redirectsTo);
                 setClicks(data.clicks);
+                setPublicUrl(data.publicUrl);
                 setLoading(false);
             })
             .catch(err => {
@@ -57,6 +59,7 @@ const RedirectInfo: React.FC<Props> = () => {
                     url={url}
                     redirectsTo={redirectsTo}
                     clicks={clicks}
+                    publicUrl={publicUrl}
                     justCreated={query.get("created") as unknown as boolean}
                 />
             )}

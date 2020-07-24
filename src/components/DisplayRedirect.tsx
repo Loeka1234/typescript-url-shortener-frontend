@@ -9,6 +9,7 @@ export interface Props {
     redirectsTo: string;
     justCreated?: boolean;
     clicks?: number | null;
+    publicUrl?: boolean;
 }
 
 const DisplayRedirect: React.FC<Props> = ({
@@ -16,6 +17,7 @@ const DisplayRedirect: React.FC<Props> = ({
     redirectsTo,
     justCreated,
     clicks,
+    publicUrl
 }) => {
     return (
         <FlexDiv column className={styles.displayRedirect}>
@@ -38,6 +40,7 @@ const DisplayRedirect: React.FC<Props> = ({
                     <h1 className={styles.clicks}>{clicks}</h1>
                 </>
             )}
+            <p>{publicUrl ? "This is a public url." : "This is a private url."}</p>
         </FlexDiv>
     );
 };

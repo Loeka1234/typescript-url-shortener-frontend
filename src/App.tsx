@@ -5,11 +5,10 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
+import { setAccessToken } from "./accessToken";
 
 // Styled Components
-import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styledComponents/utils/GlobalStyles";
-import { lightTheme, darkTheme } from "./styledComponents/utils/Theme";
 import Loader from "./styledComponents/Loader";
 
 import "./general.css";
@@ -21,37 +20,15 @@ import RedirectInfo from "./pages/RedirectInfo";
 import About from "./pages/About";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Logout from "./pages/Logout";
 
 // Layouts
 import DefaultLayout from "./layouts/DefaultLayout";
-import { setAccessToken } from "./accessToken";
-import Logout from "./pages/Logout";
+import Theme from "./components/Theme";
 
 const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
 
-    const [theme, setTheme] = useState<"Light Mode" | "Dark Mode">(
-        getLocalStorageTheme
-    );
-    const themeToggler = () => {
-        const newTheme = theme === "Light Mode" ? "Dark Mode" : "Light Mode";
-        localStorage.setItem("theme", newTheme);
-        setTheme(newTheme);
-    };
-
-    function getLocalStorageTheme() {
-        let themeFromLocalStorage: any = localStorage.getItem("theme");
-
-        if (
-            themeFromLocalStorage !== "Light Mode" &&
-            themeFromLocalStorage !== "Dark Mode"
-        )
-            themeFromLocalStorage = "Light Mode";
-
-        return themeFromLocalStorage;
-    }
-
-    // TODO: Add loader so it tries to get an access token before rendering te website
     useEffect(() => {
         fetch(process.env.REACT_APP_API_AUTH_ENDPOINT + "/token", {
             method: "POST",
@@ -90,22 +67,14 @@ const App: React.FC = () => {
             <Loader size="lg" />
         </div>
     ) : (
-        <ThemeProvider theme={theme === "Light Mode" ? lightTheme : darkTheme}>
+        <Theme>
             <GlobalStyles />
             <Router>
                 <Switch>
                     <Route
                         path="/redirects/:redirect"
                         render={() => (
-                            <DefaultLayout
-                                title="Redirect"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="Redirect">
                                 <RedirectInfo />
                             </DefaultLayout>
                         )}
@@ -114,15 +83,7 @@ const App: React.FC = () => {
                         exact
                         path="/"
                         render={() => (
-                            <DefaultLayout
-                                title="Home"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="Home">
                                 <Home />
                             </DefaultLayout>
                         )}
@@ -131,15 +92,7 @@ const App: React.FC = () => {
                         exact
                         path="/about"
                         render={() => (
-                            <DefaultLayout
-                                title="About"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="About">
                                 <About />
                             </DefaultLayout>
                         )}
@@ -148,15 +101,7 @@ const App: React.FC = () => {
                         exact
                         path="/register"
                         render={() => (
-                            <DefaultLayout
-                                title="Register"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="Register">
                                 <Register />
                             </DefaultLayout>
                         )}
@@ -165,15 +110,7 @@ const App: React.FC = () => {
                         exact
                         path="/login"
                         render={() => (
-                            <DefaultLayout
-                                title="Login"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="Login">
                                 <Login />
                             </DefaultLayout>
                         )}
@@ -182,15 +119,7 @@ const App: React.FC = () => {
                         exact
                         path="/logout"
                         render={() => (
-                            <DefaultLayout
-                                title="Logout"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="Logout">
                                 <Logout />
                             </DefaultLayout>
                         )}
@@ -199,15 +128,7 @@ const App: React.FC = () => {
                         exact
                         path="/404"
                         render={() => (
-                            <DefaultLayout
-                                title="Page Not Found"
-                                toggleTheme={themeToggler}
-                                theme={
-                                    theme === "Light Mode"
-                                        ? "Dark Mode"
-                                        : "Light Mode"
-                                }
-                            >
+                            <DefaultLayout title="Page Not Found">
                                 <NotFound />
                             </DefaultLayout>
                         )}
@@ -215,7 +136,7 @@ const App: React.FC = () => {
                     <Redirect to="/404" />
                 </Switch>
             </Router>
-        </ThemeProvider>
+        </Theme>
     );
 };
 

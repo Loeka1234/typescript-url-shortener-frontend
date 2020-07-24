@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import Button from "../styledComponents/Button";
+import { themeContext } from "../utils/themeContext";
 
 const SFooter = styled.footer`
     ${({ theme: { primaryColor } }) => css`
@@ -11,7 +12,8 @@ const SFooter = styled.footer`
         justify-content: center;
         align-items: center;
 
-        p, a {
+        p,
+        a {
             color: black;
         }
         p,
@@ -42,21 +44,21 @@ const SFooter = styled.footer`
     `}
 `;
 
-export interface FooterProps {
-    toggleTheme?: () => void | null;
-    theme?: string;
-}
+export interface FooterProps {}
 
-const Footer: React.FC<FooterProps> = ({ toggleTheme, theme }) => {
+const Footer: React.FC<FooterProps> = ({}) => {
+    const { lightMode, setLightMode } = useContext(themeContext);
+
     return (
         <SFooter>
             <div>
                 <a href="http://www.loeka.me">www.loeka.me</a>
-                {toggleTheme && (
-                    <Button onClick={toggleTheme} color="secondary">
-                        {theme}
-                    </Button>
-                )}
+                <Button
+                    onClick={() => setLightMode(!lightMode)}
+                    color="secondary"
+                >
+                    {lightMode ? "Light Mode" : "Dark Mode"}
+                </Button>
             </div>
             <p>
                 Copyright ©2020 <span>Loeka Lievens</span>

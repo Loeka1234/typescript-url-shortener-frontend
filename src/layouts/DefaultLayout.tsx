@@ -7,19 +7,19 @@ import Footer from "../components//Footer";
 export interface DefaultLayoutProps {
     children?: ReactNode;
     title?: string;
-    toggleTheme?: (() => void | null);
-    theme?: string;
 }
 
-const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title, toggleTheme, theme }) => {
+const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children, title }) => {
     return (
         <>
             <Helmet>
-                <title>{title ? `Url Shortener | ${title}` : "Url Shortener"}</title>
+                <title>
+                    {title ? `Url Shortener | ${title}` : "Url Shortener"}
+                </title>
             </Helmet>
             <Header />
             {children}
-            <Footer toggleTheme={toggleTheme} theme={theme} />
+            <Footer />
         </>
     );
 };

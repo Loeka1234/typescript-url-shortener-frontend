@@ -24,6 +24,7 @@ const Logout: React.FC = () => {
                 console.error(err);
                 setError("Couldn't logout.");
             });
+        // eslint-disable-next-line
     }, []);
     return (
         <main

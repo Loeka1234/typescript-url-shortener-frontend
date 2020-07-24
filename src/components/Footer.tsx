@@ -46,7 +46,7 @@ const SFooter = styled.footer`
 
 export interface FooterProps {}
 
-const Footer: React.FC<FooterProps> = ({}) => {
+const Footer: React.FC = () => {
     const { lightMode, setLightMode } = useContext(themeContext);
 
     return (

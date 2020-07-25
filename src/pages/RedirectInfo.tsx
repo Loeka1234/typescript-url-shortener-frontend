@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useQuery } from "../customHooks/useQuery";
 
 // Styled components
 import Loader from "../styledComponents/Loader";
+import Button from "../styledComponents/Button";
 
 // Components
 import DisplayRedirect from "../components/DisplayRedirect";
@@ -60,7 +61,7 @@ const RedirectInfo: React.FC<Props> = () => {
                     redirectsTo={redirectsTo}
                     clicks={clicks}
                     publicUrl={publicUrl}
-                    justCreated={query.get("created") as unknown as boolean}
+                    justCreated={(query.get("created") as unknown) as boolean}
                 />
             )}
         </main>

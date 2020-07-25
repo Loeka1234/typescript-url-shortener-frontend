@@ -141,6 +141,9 @@ const Header: React.FC = () => {
                 <li>
                     <Link to="/about">About</Link>
                 </li>
+                <li>
+                    <Link to="/redirects">Redirects</Link>
+                </li>
                 {user ? (
                     <>
                         <li>

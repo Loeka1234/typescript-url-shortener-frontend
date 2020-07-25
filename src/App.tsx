@@ -27,6 +27,7 @@ import Logout from "./pages/Logout";
 import DefaultLayout from "./layouts/DefaultLayout";
 import Theme from "./components/Theme";
 import { UserContext } from "./utils/userContext";
+import SearchRedirects from "./pages/SearchRedirects";
 
 const App: React.FC = () => {
     const [loading, setLoading] = useState(true);
@@ -75,6 +76,15 @@ const App: React.FC = () => {
                 <GlobalStyles />
                 <Router>
                     <Switch>
+                        <Route
+                            exact
+                            path="/redirects"
+                            render={() => (
+                                <DefaultLayout title="Search Redirects">
+                                    <SearchRedirects />
+                                </DefaultLayout>
+                            )}
+                        />
                         <Route
                             path="/redirects/:redirect"
                             render={() => (
